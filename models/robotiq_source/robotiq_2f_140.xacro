@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Every link frame but the pads' is parallel to robotiq_140_base_link, at
+       the pivot that drives it. Each pad frame sits at the centre of its pad's
+       contact face, z pointing away from the other pad. The linkage is a
+       parallelogram, so the inner fingers stay parallel to the base as
+       finger_joint closes them. -->
+
+  <xacro:macro name="finger_link" params="prefix name mesh mass com ixx ixy ixz iyy iyz izz">
+    <link name="${prefix}${name}">
+      <inertial>
+        <origin xyz="${com}" rpy="0 0 0" />
+        <mass value="${mass}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://robotiq_description/meshes/visual/2f_140/robotiq_2f_140_${mesh}.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://robotiq_description/meshes/collision/2f_140/robotiq_2f_140_${mesh}.stl" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- stroke: the 1.3 macros' argument, for a robotiq_2f_140_macro.urdf.xacro
+       copied from that release. -->
+  <xacro:macro name="finger_links" params="prefix fingerprefix stroke:=''">
+    <xacro:if value="${stroke != ''}">
+      ${xacro.warning('the stroke argument of finger_links is deprecated since 1.4.0 and removed in the next major release')}
+    </xacro:if>
+    <xacro:if value="${fingerprefix == 'left'}">
+      <xacro:finger_link prefix="${prefix}" name="left_outer_knuckle" mesh="outer_knuckle_left" mass="0.009163"
+          com="0 -0.022293 -0.001722" ixx="2.13107e-07" ixy="0" ixz="0" iyy="6.73439e-07" iyz="0" izz="7.51601e-07"/>
+      <xacro:finger_link prefix="${prefix}" name="left_outer_finger" mesh="outer_finger_left" mass="0.077064"
+          com="3e-06 -0.014682 0.034201" ixx="5.35424e-05" ixy="2.09749e-11" ixz="-8.50742e-11" iyy="4.52989e-05" iyz="2.17303e-05" izz="1.90862e-05"/>
+      <xacro:finger_link prefix="${prefix}" name="left_inner_knuckle" mesh="inner_knuckle_left" mass="0.068112"
+          com="0 -0.035558 0.039592" ixx="4.53847e-05" ixy="-5.08846e-08" ixz="-1.15833e-08" iyy="3.28597e-05" iyz="2.15828e-05" izz="2.55428e-05"/>
+      <xacro:finger_link prefix="${prefix}" name="left_inner_finger" mesh="inner_finger_left" mass="0.049834"
+          com="-1e-06 0.015976 0.031861" ixx="1.71297e-05" ixy="5.77571e-09" ixz="9.85228e-09" iyy="1.83739e-05" iyz="-3.36836e-06" izz="3.79156e-06"/>
+      <xacro:finger_link prefix="${prefix}" name="left_inner_finger_pad" mesh="inner_finger_pad_left" mass="0.04"
+          com="0 4.59924e-05 0.00961248" ixx="1.53e-05" ixy="0" ixz="0" iyy="3.6e-06" iyz="0" izz="1.65e-05"/>
+    </xacro:if>
+    <xacro:if value="${fingerprefix == 'right'}">
+      <xacro:finger_link prefix="${prefix}" name="right_outer_knuckle" mesh="outer_knuckle_right" mass="0.009163"
+          com="0 0.022293 -0.001722" ixx="2.13107e-07" ixy="0" ixz="0" iyy="6.73439e-07" iyz="0" izz="7.51601e-07"/>
+      <xacro:finger_link prefix="${prefix}" name="right_outer_finger" mesh="outer_finger_right" mass="0.077064"
+          com="3e-06 0.014682 0.034201" ixx="5.35424e-05" ixy="-2.09749e-11" ixz="-8.50742e-11" iyy="4.52989e-05" iyz="-2.17303e-05" izz="1.90862e-05"/>
+      <xacro:finger_link prefix="${prefix}" name="right_inner_knuckle" mesh="inner_knuckle_right" mass="0.068112"
+          com="0 0.035558 0.039592" ixx="4.53847e-05" ixy="5.08846e-08" ixz="-1.15833e-08" iyy="3.28597e-05" iyz="-2.15828e-05" izz="2.55428e-05"/>
+      <xacro:finger_link prefix="${prefix}" name="right_inner_finger" mesh="inner_finger_right" mass="0.049834"
+          com="-1e-06 -0.015976 0.031861" ixx="1.71297e-05" ixy="-5.77571e-09" ixz="9.85228e-09" iyy="1.83739e-05" iyz="3.36836e-06" izz="3.79156e-06"/>
+      <xacro:finger_link prefix="${prefix}" name="right_inner_finger_pad" mesh="inner_finger_pad_right" mass="0.04"
+          com="0 4.59924e-05 0.00961248" ixx="1.53e-05" ixy="0" ixz="0" iyy="3.6e-06" iyz="0" izz="1.65e-05"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <xacro:macro name="finger_joint" params="prefix">
+    <joint name="${prefix}finger_joint" type="revolute">
+      <origin xyz="0 -0.030601 0.054663" rpy="0 0 0" />
+      <parent link="${prefix}robotiq_140_base_link" />
+      <child link="${prefix}left_outer_knuckle" />
+      <axis xyz="-1 0 0" />
+      <limit lower="0" upper="0.785" velocity="2.0" effort="1000" />
+    </joint>
+    <joint name="${prefix}left_outer_finger_joint" type="fixed">
+      <origin xyz="0 -0.031425 -0.004533" rpy="0 0 0" />
+      <parent link="${prefix}left_outer_knuckle" />
+      <child link="${prefix}left_outer_finger" />
+    </joint>
+    <joint name="${prefix}left_inner_knuckle_joint" type="revolute">
+      <origin xyz="0 -0.0127 0.061178" rpy="0 0 0" />
+      <parent link="${prefix}robotiq_140_base_link" />
+      <child link="${prefix}left_inner_knuckle" />
+      <axis xyz="-1 0 0" />
+      <limit lower="0" upper="0.785" velocity="2.0" effort="1000" />
+      <mimic joint="${prefix}finger_joint" multiplier="1" offset="0" />
+    </joint>
+    <joint name="${prefix}left_inner_finger_joint" type="revolute">
+      <origin xyz="0 -0.03543 0.078899" rpy="0 0 0" />
+      <parent link="${prefix}left_outer_finger" />
+      <child link="${prefix}left_inner_finger" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.785" upper="0" velocity="2.0" effort="1000" />
+      <mimic joint="${prefix}finger_joint" multiplier="-1" offset="0" />
+    </joint>
+    <joint name="${prefix}left_inner_finger_pad_joint" type="fixed">
+      <origin xyz="0 0.0271685 0.047725" rpy="${pi / 2} 0 0" />
+      <parent link="${prefix}left_inner_finger" />
+      <child link="${prefix}left_inner_finger_pad" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="right_outer_knuckle_joint" params="prefix">
+    <joint name="${prefix}right_outer_knuckle_joint" type="revolute">
+      <origin xyz="0 0.030601 0.054663" rpy="0 0 0" />
+      <parent link="${prefix}robotiq_140_base_link" />
+      <child link="${prefix}right_outer_knuckle" />
+      <axis xyz="1 0 0" />
+      <limit lower="0" upper="0.785" velocity="2.0" effort="1000" />
+      <mimic joint="${prefix}finger_joint" multiplier="1" offset="0" />
+    </joint>
+    <joint name="${prefix}right_outer_finger_joint" type="fixed">
+      <origin xyz="0 0.031425 -0.004533" rpy="0 0 0" />
+      <parent link="${prefix}right_outer_knuckle" />
+      <child link="${prefix}right_outer_finger" />
+    </joint>
+    <joint name="${prefix}right_inner_knuckle_joint" type="revolute">
+      <origin xyz="0 0.0127 0.061178" rpy="0 0 0" />
+      <parent link="${prefix}robotiq_140_base_link" />
+      <child link="${prefix}right_inner_knuckle" />
+      <axis xyz="1 0 0" />
+      <limit lower="0" upper="0.785" velocity="2.0" effort="1000" />
+      <mimic joint="${prefix}finger_joint" multiplier="1" offset="0" />
+    </joint>
+    <joint name="${prefix}right_inner_finger_joint" type="revolute">
+      <origin xyz="0 0.03543 0.078899" rpy="0 0 0" />
+      <parent link="${prefix}right_outer_finger" />
+      <child link="${prefix}right_inner_finger" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.785" upper="0" velocity="2.0" effort="1000" />
+      <mimic joint="${prefix}finger_joint" multiplier="-1" offset="0" />
+    </joint>
+    <joint name="${prefix}right_inner_finger_pad_joint" type="fixed">
+      <origin xyz="0 -0.0271685 0.047725" rpy="${pi / 2} 0 ${pi}" />
+      <parent link="${prefix}right_inner_finger" />
+      <child link="${prefix}right_inner_finger_pad" />
+    </joint>
+  </xacro:macro>
+</robot>

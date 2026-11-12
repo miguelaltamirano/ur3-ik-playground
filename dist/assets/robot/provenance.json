@@ -1,0 +1,452 @@
+{
+  "ur3": {
+    "upstream": "https://github.com/UniversalRobots/Universal_Robots_ROS2_Description",
+    "installed_version": "2.9.0",
+    "robot": "UR3 CB3, not UR3e",
+    "inertia_note": "Upstream cylinder approximations; not per-robot identified inertia",
+    "collision_note": "MuJoCo convex hull per official collision mesh; adjacent links excluded",
+    "source_sha256": {
+      "urdf/ur_macro.xacro": "7cc01c5779723f60397309216b295885a1a64741f7f61f212a92fe8da5116674",
+      "urdf/inc/ur_common.xacro": "6f01bf71dc8073b5cd7458c12ed39d87eb99ffec7d6bb31d534d96f83c534304",
+      "urdf/inc/ur_transmissions.xacro": "85096b2102ef26cb11313956e9ba737f3fae63a0b702108f8cf3253de1cdadf3",
+      "package.xml": "df7236b690216a8b5355cd56de6665ecb84ad8c831da6131302762d618a177aa",
+      "config/ur3/visual_parameters.yaml": "97f8c4264d33febd0c998983b58a8f83039c01dd58634aa845ceb1fb3749603e",
+      "config/ur3/default_kinematics.yaml": "62ccae1768678cfddaee8e2a1b621365d7ac8a58b4a7607aed680ed572c8a423",
+      "config/ur3/physical_parameters.yaml": "45ab62cfa834874f8a3ed4b23b5df5e3258629c6a218b0cc39de67cda2138388",
+      "config/ur3/joint_limits.yaml": "3ca03a6b107fab1d20a18a4e3a967ed0f14de228208a95c4735a6c966ea18534",
+      "meshes/ur3/collision/base.stl": "a4632b7941b0a090c0817255d01a1b3e759b47291487c5742d621395a0a8df2e",
+      "meshes/ur3/collision/forearm.stl": "08a578aa50bba584f236591b25dfdf0a03a060f05946a7d1c450d800cae5cbb8",
+      "meshes/ur3/collision/wrist2.stl": "efb209b3659d4864d17bbdacb1820f9be45aa7b6418c42fda447d6ff7a1da220",
+      "meshes/ur3/collision/wrist3.stl": "27ad47ace7b5318c2259de92f340e13e25a119f91fb42e5c40d608850db06883",
+      "meshes/ur3/collision/wrist1.stl": "fec8baaeffb31e3de92e62a5b5ce4dba1e3d36cf253ff2a0346c32a6c2b7ef6d",
+      "meshes/ur3/collision/upperarm.stl": "81ccc4d6ee7cac170ace494dc88cf2930f78a1d7edf3c38a96e6b1b90c540c60",
+      "meshes/ur3/collision/shoulder.stl": "c6a66fc64afa98f694307014cb5ec9cd73a3c4a03730cdbee700a835292ce3d0",
+      "meshes/ur3/visual/base.dae": "cebc07433aa6be5d38efa7fd7f8bef5b886add457631caa194fa3d4de7b8d764",
+      "meshes/ur3/visual/upperarm.dae": "6b8c8a4d68ce0a964abd7c3f493728b3d0d10921ee378c857bcf15b8dd2f9869",
+      "meshes/ur3/visual/shoulder.dae": "53bfe7808ad7bfe7260818022fdf18bf2c3640fa9cc7cb3b571d527ef0d53e5a",
+      "meshes/ur3/visual/wrist1.dae": "0a9302c733b031d7b33aa3c0a8ea0d8c3180bc98c819fb6e7f0e0803a851d9c5",
+      "meshes/ur3/visual/wrist2.dae": "ff6a157c9dc6174082b7a595bbf8024051ceace6c34911b405b48ebf76b4523e",
+      "meshes/ur3/visual/forearm.dae": "c059ae9d135dff9c2b6319d6d07c44f4470b84d61398a85a15262c9cde893393",
+      "meshes/ur3/visual/wrist3.dae": "24f68bc002b640779d3632716e07867288f08c01cbd5f3351ce67b94290e44ce"
+    },
+    "parts": {
+      "base_link_inertia": [
+        {
+          "name": "base_link_inertia_0",
+          "file": "base_link_inertia_0.obj",
+          "rgba": "0.2688 0.2688 0.2688 1",
+          "vertices": 6011,
+          "triangles": 7583
+        },
+        {
+          "name": "base_link_inertia_1",
+          "file": "base_link_inertia_1.obj",
+          "rgba": "0 0 0 1",
+          "vertices": 675,
+          "triangles": 409
+        }
+      ],
+      "shoulder_link": [
+        {
+          "name": "shoulder_link_0",
+          "file": "shoulder_link_0.obj",
+          "rgba": "0.114176 0.114176 0.114176 1",
+          "vertices": 2266,
+          "triangles": 2668
+        },
+        {
+          "name": "shoulder_link_1",
+          "file": "shoulder_link_1.obj",
+          "rgba": "0.200704 0.278016 0.32768 1",
+          "vertices": 18229,
+          "triangles": 13064
+        },
+        {
+          "name": "shoulder_link_2",
+          "file": "shoulder_link_2.obj",
+          "rgba": "0.04096 0.04096 0.04096 1",
+          "vertices": 65,
+          "triangles": 126
+        },
+        {
+          "name": "shoulder_link_3",
+          "file": "shoulder_link_3.obj",
+          "rgba": "0.114176 0.114176 0.114176 1",
+          "vertices": 60,
+          "triangles": 116
+        },
+        {
+          "name": "shoulder_link_4",
+          "file": "shoulder_link_4.obj",
+          "rgba": "0.04096 0.04096 0.04096 1",
+          "vertices": 60,
+          "triangles": 116
+        },
+        {
+          "name": "shoulder_link_5",
+          "file": "shoulder_link_5.obj",
+          "rgba": "0.114176 0.114176 0.114176 1",
+          "vertices": 60,
+          "triangles": 116
+        }
+      ],
+      "upper_arm_link": [
+        {
+          "name": "upper_arm_link_0",
+          "file": "upper_arm_link_0.obj",
+          "rgba": "0.25088 0.34752 0.4096 1",
+          "vertices": 21895,
+          "triangles": 13064
+        },
+        {
+          "name": "upper_arm_link_1",
+          "file": "upper_arm_link_1.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 60,
+          "triangles": 116
+        },
+        {
+          "name": "upper_arm_link_2",
+          "file": "upper_arm_link_2.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 60,
+          "triangles": 116
+        },
+        {
+          "name": "upper_arm_link_3",
+          "file": "upper_arm_link_3.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 65,
+          "triangles": 126
+        },
+        {
+          "name": "upper_arm_link_4",
+          "file": "upper_arm_link_4.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 2619,
+          "triangles": 2669
+        },
+        {
+          "name": "upper_arm_link_5",
+          "file": "upper_arm_link_5.obj",
+          "rgba": "0.335872 0.335872 0.335872 1",
+          "vertices": 778,
+          "triangles": 824
+        },
+        {
+          "name": "upper_arm_link_6",
+          "file": "upper_arm_link_6.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 110,
+          "triangles": 110
+        },
+        {
+          "name": "upper_arm_link_7",
+          "file": "upper_arm_link_7.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 110,
+          "triangles": 110
+        },
+        {
+          "name": "upper_arm_link_8",
+          "file": "upper_arm_link_8.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 112,
+          "triangles": 110
+        },
+        {
+          "name": "upper_arm_link_9",
+          "file": "upper_arm_link_9.obj",
+          "rgba": "0.25088 0.34752 0.4096 1",
+          "vertices": 1246,
+          "triangles": 1422
+        },
+        {
+          "name": "upper_arm_link_10",
+          "file": "upper_arm_link_10.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 787,
+          "triangles": 1068
+        }
+      ],
+      "forearm_link": [
+        {
+          "name": "forearm_link_0",
+          "file": "forearm_link_0.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 1297,
+          "triangles": 1760
+        },
+        {
+          "name": "forearm_link_1",
+          "file": "forearm_link_1.obj",
+          "rgba": "0.335872 0.335872 0.335872 1",
+          "vertices": 556,
+          "triangles": 550
+        },
+        {
+          "name": "forearm_link_2",
+          "file": "forearm_link_2.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 2696,
+          "triangles": 2491
+        },
+        {
+          "name": "forearm_link_3",
+          "file": "forearm_link_3.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 110,
+          "triangles": 110
+        },
+        {
+          "name": "forearm_link_4",
+          "file": "forearm_link_4.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 112,
+          "triangles": 110
+        },
+        {
+          "name": "forearm_link_5",
+          "file": "forearm_link_5.obj",
+          "rgba": "0.25088 0.34752 0.4096 1",
+          "vertices": 6361,
+          "triangles": 4634
+        }
+      ],
+      "wrist_1_link": [
+        {
+          "name": "wrist_1_link_0",
+          "file": "wrist_1_link_0.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 2924,
+          "triangles": 2492
+        },
+        {
+          "name": "wrist_1_link_1",
+          "file": "wrist_1_link_1.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 114,
+          "triangles": 110
+        },
+        {
+          "name": "wrist_1_link_2",
+          "file": "wrist_1_link_2.obj",
+          "rgba": "0.25088 0.34752 0.4096 1",
+          "vertices": 6012,
+          "triangles": 4634
+        }
+      ],
+      "wrist_2_link": [
+        {
+          "name": "wrist_2_link_0",
+          "file": "wrist_2_link_0.obj",
+          "rgba": "0.25088 0.34752 0.4096 1",
+          "vertices": 6287,
+          "triangles": 4634
+        },
+        {
+          "name": "wrist_2_link_1",
+          "file": "wrist_2_link_1.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 112,
+          "triangles": 110
+        },
+        {
+          "name": "wrist_2_link_2",
+          "file": "wrist_2_link_2.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 2775,
+          "triangles": 2492
+        }
+      ],
+      "wrist_3_link": [
+        {
+          "name": "wrist_3_link_0",
+          "file": "wrist_3_link_0.obj",
+          "rgba": "0.335872 0.335872 0.335872 1",
+          "vertices": 211,
+          "triangles": 418
+        },
+        {
+          "name": "wrist_3_link_1",
+          "file": "wrist_3_link_1.obj",
+          "rgba": "0.14272 0.14272 0.14272 1",
+          "vertices": 55,
+          "triangles": 110
+        }
+      ]
+    },
+    "joint_limits": [
+      {
+        "name": "shoulder_pan_joint",
+        "effort_nm": 56.0,
+        "velocity_rad_s": 3.141592653589793,
+        "assumed_servo_kp": 3000,
+        "assumed_servo_kd": 130
+      },
+      {
+        "name": "shoulder_lift_joint",
+        "effort_nm": 56.0,
+        "velocity_rad_s": 3.141592653589793,
+        "assumed_servo_kp": 2500,
+        "assumed_servo_kd": 110
+      },
+      {
+        "name": "elbow_joint",
+        "effort_nm": 28.0,
+        "velocity_rad_s": 3.141592653589793,
+        "assumed_servo_kp": 1800,
+        "assumed_servo_kd": 90
+      },
+      {
+        "name": "wrist_1_joint",
+        "effort_nm": 12.0,
+        "velocity_rad_s": 6.283185307179586,
+        "assumed_servo_kp": 500,
+        "assumed_servo_kd": 30
+      },
+      {
+        "name": "wrist_2_joint",
+        "effort_nm": 12.0,
+        "velocity_rad_s": 6.283185307179586,
+        "assumed_servo_kp": 400,
+        "assumed_servo_kd": 20
+      },
+      {
+        "name": "wrist_3_joint",
+        "effort_nm": 12.0,
+        "velocity_rad_s": 6.283185307179586,
+        "assumed_servo_kp": 300,
+        "assumed_servo_kd": 15
+      }
+    ]
+  },
+  "robotiq": {
+    "repository": "https://github.com/robotiq/ros",
+    "commit": "7d0bc4aeaf16c8934520667bac4617e192a866ce",
+    "directory": "grippers/robotiq_description",
+    "fixedJoints": [
+      {
+        "name": "finger_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": null
+      },
+      {
+        "name": "left_inner_knuckle_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": {
+          "joint": "finger_joint",
+          "multiplier": "1",
+          "offset": "0"
+        }
+      },
+      {
+        "name": "left_inner_finger_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": {
+          "joint": "finger_joint",
+          "multiplier": "-1",
+          "offset": "0"
+        }
+      },
+      {
+        "name": "right_outer_knuckle_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": {
+          "joint": "finger_joint",
+          "multiplier": "1",
+          "offset": "0"
+        }
+      },
+      {
+        "name": "right_inner_knuckle_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": {
+          "joint": "finger_joint",
+          "multiplier": "1",
+          "offset": "0"
+        }
+      },
+      {
+        "name": "right_inner_finger_joint",
+        "type": "revolute",
+        "openAngle": 0.0,
+        "mimic": {
+          "joint": "finger_joint",
+          "multiplier": "-1",
+          "offset": "0"
+        }
+      }
+    ]
+  },
+  "mounting": "Official ur_to_robotiq adapter on tool0, zero yaw parameter, +0.011 m. Official 2F140 base yaw +pi/2. The adapter mesh lives in upstream 2f_85/ and is shared; all gripper parts come from 2f_140/.",
+  "tcp": "Uncalibrated classroom frame: fixed at midpoint of open finger pad contact frames, oriented with robotiq_140_base_link.",
+  "tcpInGripperBase": [
+    0.0,
+    0.0,
+    0.17675399999999997
+  ],
+  "padGapMetres": 0.140575,
+  "searchIntervalNote": "Continuous physical joint; [-2pi,2pi] is only the classroom numerical search interval.",
+  "source_sha256": {
+    "ur3/source.urdf": "8780e3828ec8a61964598589b3a4eeb6ee269c7ef9c1c50427c9e8007a4d5827",
+    "ur3/source_wrapper.xacro": "a69697f8a6441f84acb9f29573c7e6b0e88642f1485fdfe21baf9825af728b67",
+    "ur3/robot.xml": "db3d67fc6bfd3aae4e3d26138c3619c4a07aaad5eb37d0db5ada4349b9211a67",
+    "ur3/LICENSE": "a0942017ea3cdaea501d335bd96785db389d1983f8c9aad9063d9dfb5ec6caec",
+    "robotiq_source/robotiq_2f_140_macro.urdf.xacro": "598342ca16d635c9d0349fc027b8000793b34ac0686ab4f18c6cf3267b2440d3",
+    "robotiq_source/robotiq_2f_140.xacro": "551129bdb4a7e55a2501d9fcc2a0c671d885cfa2dda972373ce1e71d5a70378d",
+    "robotiq_source/ur_to_robotiq_adapter.urdf.xacro": "9a196d23b73ee68b3181f350294ecb9fef8ff2695c06854f19202ba47e2194fe",
+    "robotiq_source/LICENSE": "a47544ef0ad645c587e46348dc10e68b89c3e74732bd124c005cfcd8ede3b3b8",
+    "base_link_inertia_0.obj": "bd24b72e52a68aff350769eeda1684705a9a98c930d3f3028c2e279495d0e19b",
+    "base_link_inertia_1.obj": "17462936da72b6e9af4353a2ad202d523e3485226561da4176a773677cc14204",
+    "shoulder_link_0.obj": "e077f64c8b8832fd0c4e81ede75666f777846cb92e3c90d83cf13922739a8dfb",
+    "shoulder_link_1.obj": "0412b65fc9b076f27fb6cdd5acb5b02220dca1c07e2ff4db9ae31cdc842ae51a",
+    "shoulder_link_2.obj": "bf41e389854fecd96e5e53c476bb048bc645f1d267ef6f1c5ada5a771749b1a4",
+    "shoulder_link_3.obj": "6dfdcaf93cd1c0489ccb9082ca3951ad058b2cab4a61284f5ca1be6c9b24a77e",
+    "shoulder_link_4.obj": "48bb803f8f5fb44e188a8a0f5014adb6c550a6ed5ebe73813562f6e751fa061e",
+    "shoulder_link_5.obj": "127311f27588da1dde7c6b117ef6161c180b5f029375ab4725a9e46939c7ca51",
+    "upper_arm_link_0.obj": "5c1ede3eea8927ae0dd840a272b7e78a57fb749c199b8611255a87a4e8eb2d17",
+    "upper_arm_link_1.obj": "964cb13c3cf81e229aee4e0c67047e598aed3b4c64aecd0514dc3610619399f4",
+    "upper_arm_link_2.obj": "12dd53966bb0df4b419416c31fa5f950c9b0a5d5d21ead8cd50dc831681584c9",
+    "upper_arm_link_3.obj": "81dcd4e6be04771a2478bc86e4e9ecad3cc1a6b96ee3786e4ef302a612ecd7d1",
+    "upper_arm_link_4.obj": "73e24d04a79a429fb0ca927d4a8fa664ccf5772893b90935d650c33628e9ba1c",
+    "upper_arm_link_5.obj": "fa8694ef2aa512831ccae954462eb4111116d4f994d47699f9fad2d25496a99c",
+    "upper_arm_link_6.obj": "61022dc49e137e3622b14ad2a5bc46fcd136534132e205a312e2d33ced840d32",
+    "upper_arm_link_7.obj": "e9d913a9c150bf5d1e1536a27ffc3cb97d5aa743c16f79198c8f36ae59f4c3d6",
+    "upper_arm_link_8.obj": "ba628c3aab3664b09c6f8c0f34f34890028a29424abe5959b128d3b3104ad211",
+    "upper_arm_link_9.obj": "a5d312cd26978d35ba8c44757a795df84f5bc3541912f4fc95f4b70fb0ea7876",
+    "upper_arm_link_10.obj": "6f8457057f1d5463a00ce850dad98c5105a61a5464929795137fee534ddb9ecb",
+    "forearm_link_0.obj": "65b222e281dd9e59258fffdd0ac9fb7a316810738d83842cfe1e3ca18a85fd18",
+    "forearm_link_1.obj": "639859acade191db7f7e556af2ba9588515d2d9b6f6ec80f231e01a3bc964313",
+    "forearm_link_2.obj": "0765908075d8d8b6a9121910fae7be01d8010558e80c358d3b118ae03cee1ccf",
+    "forearm_link_3.obj": "b45529bbec8c43e20b01969b13441be375e1538ec1007b90cd81d6868713fee7",
+    "forearm_link_4.obj": "47744666b5fd38351901e647c0e6c7bc0aeeed3406d4d437f4b2da80055b9edf",
+    "forearm_link_5.obj": "af897a08e2e89cc01f18bfdc75b4fee8ce47c775dc4adf2243c75ab7ce762880",
+    "wrist_1_link_0.obj": "0bfa5403a691c9557b6bb640efe668e5f46eef5ad961d8563feff16930daf6da",
+    "wrist_1_link_1.obj": "119051b61b422b8d87d24347f532cdbc3094f54d6b634994894f56f7378ab81c",
+    "wrist_1_link_2.obj": "c1112d13f1684cc8c3ec271909a0e4fc88eaac90dbf998c6fe1530f64c6273bb",
+    "wrist_2_link_0.obj": "74c5ef3fa6860d722ecdba65c0850988ec76253143da1c48bbd07212bbe6f0ff",
+    "wrist_2_link_1.obj": "419d99fa9b302092d6842018ca4c2d57e0660cf8454059bc902c0b2596857c2a",
+    "wrist_2_link_2.obj": "26862f13886135903b108a7f9361bef2a7cb54d6851d7863b6ed42efaf54477b",
+    "wrist_3_link_0.obj": "7c340981af4612504f94efa0a35b296660ea8a5dff776f79b0ab48acae36eff0",
+    "wrist_3_link_1.obj": "f9e47b4736a98cac852974757d4037f43e4f054aebf7aad68305770bfb22d551",
+    "robotiq_source/meshes/visual/2f_85/ur_to_robotiq_adapter.dae": "ed326c745df2942d2efb8dd902ecfafa84c692d360a7c03ce9276ad491614ac4",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_base_link.dae": "8e59a11d711d821e9d80a4079d185142c02abd7bca1887c4ce4e9756d7a98a4e",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_knuckle_left.dae": "6081e7977ed992f5f7edfa0ed7c1f6aa305e1d065464c5a2d57f6546a857c033",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_finger_left.dae": "88686dc1cc3b3a384d9d2a87745e1adf05dd439eedb9c56f0f75836336a4a5f5",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_knuckle_left.dae": "1098013a76071bb76316955730dd7ddeb02f6bcbb0528a6fbad6123f004e352a",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_left.dae": "c8699878d7489e2bbc260f4b3c864cedc13c4727762d402fb79b9c630593d7d4",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_pad_left.dae": "213ece537f6e63e0f495e628d217a6aa97f9189a58ee93be9cc472a97d35f97f",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_knuckle_right.dae": "fba0eb351fbc85e137e5472af664795e025a4ebb2f71aa394aa9bfbedd774518",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_finger_right.dae": "76e73c110737e7f2788b31233d8b55e3ed9c55c801293866e37334e48588e1c9",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_knuckle_right.dae": "1ec15cbfcd7e27683aa82dbd5cb9b4056bec2bdcc24acc63ff09e5cefebe5a4b",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_right.dae": "3b5d91f97d108f8562a101b37fa9af6fb4c7b273739e2c398d0ee17527b84718",
+    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_pad_right.dae": "033458e121ff43d5966b72aeec056cd63ac2107e6ef3dad959d5df7925acb04b"
+  },
+  "binarySha256": "775f3ad2558aa0b06845b47bf161803c6663bcca811630db61a8267a5ab7d97d"
+}
