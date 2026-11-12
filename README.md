@@ -1,4 +1,4 @@
-# UR3 + Robotiq 2F-140 inverse-kinematics lab
+# UR3 + Robotiq 2F-85 inverse-kinematics lab
 
 **Open the lab:** https://miguelaltamirano.github.io/ur3-ik-playground/
 
@@ -27,9 +27,9 @@ The classroom runtime is intended for code the student chooses to run. It is not
 
 ## Model and conventions
 
-The arm is the **UR3 CB3**, with nominal uncalibrated geometry from official `ur_description` 2.9.0. It is not UR3e. The gripper is the **Robotiq 2F-140**, mounted with its official 11 mm adapter and fixed in its fully open posture. The adapter mesh is shared upstream in the `2f_85` directory; all finger and gripper-body meshes are from `2f_140`.
+The arm is the **UR3 CB3**, with nominal uncalibrated geometry from official `ur_description` 2.9.0. It is not UR3e. The gripper is the **Robotiq 2F-85**, mounted with its official 11 mm adapter and fixed in its fully open posture. The adapter, fingers and gripper-body meshes all come from the official `2f_85` directory.
 
-`classroom_tcp` is the midpoint of the open pad contact frames, oriented with the gripper base. It lies 0.176754 m along the gripper-base Z axis, or 0.187754 m from `wrist_3_link` along its Z axis after including the adapter. This is a classroom TCP convention, not a calibrated tool definition. All targets and geometric Jacobians are in the model's world/base frame. Orientation inputs use `Rz(yaw) Ry(pitch) Rx(roll)`.
+`classroom_tcp` is the midpoint of the area-weighted centres of the two inward fingertip contact faces in the fully open posture, oriented with the gripper base. The official 2F-85 model has no separate pad-contact or TCP frames, so the centres are derived from its actual CAD faces. In gripper-base coordinates the TCP is approximately `[0, -0.0003750023, 0.1302245943]` m; including the 11 mm adapter gives `[0, -0.0003750023, 0.1412245943]` m from `wrist_3_link`, with the same orientation. The small Y offset comes from the source CAD. The open pad gap is approximately 85 mm along the gripper-base X axis. This is a classroom TCP convention, not a calibrated tool definition. All targets and geometric Jacobians are in the model's world/base frame. Orientation inputs use `Rz(yaw) Ry(pitch) Rx(roll)`.
 
 Joint order is shoulder pan, shoulder lift, elbow, wrist 1, wrist 2, wrist 3. Angles inside the solver are radians. The model's joint intervals are retained except for physically continuous wrist 3, where ±2π is an explicit numerical search interval, not a hardware limit. There is no collision detection, gripper closure, contact simulation, dynamics or physical robot connection.
 
@@ -78,3 +78,5 @@ All runtime mesh and model assets are already checked in. The optional `scripts/
 Detailed source hashes, mounting information and the mesh checksum are in [provenance.json](dist/assets/robot/provenance.json). The inherited UR conversion's collision/inertia metadata describes its source artifact; this web exercise uses visual geometry and kinematics only.
 
 This is an independent classroom lab. The existing [G1 lecture](https://miguelaltamirano.github.io/g1-pinocchio-lab/) and [G1 Python playground](https://miguelaltamirano.github.io/g1-ik-playground/) remain separate.
+
+The earlier 2F-140 version is retained in Git tag `v1-2f140`. Existing browser code drafts are migrated when opening the updated lab.

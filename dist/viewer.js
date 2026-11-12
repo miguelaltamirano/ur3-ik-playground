@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three.module.min.js';
 import {OrbitControls} from './vendor/OrbitControls.js';
-import {createRobot} from './robot-model.js';
+import {createRobot} from './robot-model.js?v=2f85-1';
 import {makeKinematics, svd} from './math.js';
 
 export async function createViewer(canvas, arm) {
@@ -121,7 +121,7 @@ export async function createViewer(canvas, arm) {
     const loading = document.querySelector('#viewer-loading');
     loading.hidden = false; loading.textContent = 'The 3D view was interrupted. Reload the page to restore it.';
   });
-  const responses = await Promise.all(['robot.json', 'meshes.bin'].map(name => fetch(new URL(`./assets/robot/${name}`, import.meta.url))));
+  const responses = await Promise.all(['robot.json', 'meshes.bin'].map(name => fetch(new URL(`./assets/robot/${name}`, import.meta.url), {cache:'no-cache'})));
   if (responses.some(r => !r.ok)) throw new Error('Robot assets could not be loaded');
   const [model, buffer] = await Promise.all([responses[0].json(), responses[1].arrayBuffer()]);
   robot = createRobot(model, arm, buffer);

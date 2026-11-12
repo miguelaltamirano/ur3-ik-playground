@@ -1,4 +1,4 @@
-"""Build a six-DOF UR3 CB3 + fixed-open Robotiq 2F-140 classroom model.
+"""Build a six-DOF UR3 CB3 + fixed-open Robotiq 2F-85 classroom model.
 
 Build dependencies: NumPy, SciPy, xacro. No student-side dependencies.
 UR3 source assets are already converted from installed official ur_description 2.9.0.
@@ -101,14 +101,36 @@ def obj(path):
     return np.asarray(vertices), np.asarray(faces)
 
 
+def contact_face_center(side):
+    """Area-weighted center of the actual inward planar rubber contact surface.
+
+    The 2F-85 URDF has no pad/TCP frames. Its open fingertip meshes have planar
+    inward faces at their X extrema: negative X for left, positive X for right.
+    Use those faces, not the fingertip joint origins or the 2F-140 pad convention.
+    """
+    parts = collada_parts(GRIP / f'meshes/visual/2f_85/{side}_finger_tip.dae')
+    all_points = np.vstack([p for p, _, _ in parts])
+    plane = all_points[:, 0].min() if side == 'left' else all_points[:, 0].max()
+    centers, areas = [], []
+    for points, faces, _ in parts:
+        triangles = points[faces]
+        area = np.linalg.norm(np.cross(triangles[:, 1] - triangles[:, 0],
+                                       triangles[:, 2] - triangles[:, 0]), axis=1) / 2
+        selected = np.all(np.abs(triangles[:, :, 0] - plane) < 1e-7, axis=1) & (area > 1e-10)
+        centers.extend(triangles[selected].mean(axis=1))
+        areas.extend(area[selected])
+    assert len(areas) == 20 and 0.0008 < sum(areas) < 0.0009, 'Unexpected 2F-85 contact face'
+    return np.average(centers, weights=areas, axis=0)
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     # Keep pristine upstream xacro files; disable only controller integration in a build copy.
-    macro = (GRIP / 'robotiq_2f_140_macro.urdf.xacro').read_text()
-    macro = '\n'.join(line for line in macro.splitlines() if '2f_140.ros2_control.xacro' not in line)
+    macro = (GRIP / 'robotiq_2f_85_macro.urdf.xacro').read_text()
+    macro = '\n'.join(line for line in macro.splitlines() if '2f_85.ros2_control.xacro' not in line)
     macro = macro.replace('$(find robotiq_description)/urdf/', str(GRIP) + '/')
     (GRIP / 'build_macro.xacro').write_text(macro)
-    wrapper = f'''<robot name="robotiq_2f140" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    wrapper = f'''<robot name="robotiq_2f85" xmlns:xacro="http://www.ros.org/wiki/xacro">
       <link name="tool0"/>
       <xacro:include filename="{GRIP / 'ur_to_robotiq_adapter.urdf.xacro'}"/>
       <xacro:include filename="{GRIP / 'build_macro.xacro'}"/>
@@ -119,7 +141,7 @@ def main():
     </robot>'''
     (GRIP / 'wrapper.xacro').write_text(wrapper)
     gripper = ET.fromstring(xacro.process_file(str(GRIP / 'wrapper.xacro')).toxml())
-    # TCP at midpoint of contact pad frames in the open posture. Keep it rigid thereafter.
+    # TCP from the open mesh contact surfaces. Keep it rigid thereafter.
     poses = {'tool0': np.eye(4)}
     pending = list(gripper.findall('joint'))
     while pending:
@@ -128,13 +150,15 @@ def main():
         for j in ready:
             poses[j.find('child').get('link')] = poses[j.find('parent').get('link')] @ transform(j)
             pending.remove(j)
-    midpoint = (poses['left_inner_finger_pad'][:3, 3] + poses['right_inner_finger_pad'][:3, 3]) / 2
-    base_T = poses['robotiq_140_base_link']
-    tcp_xyz = (np.linalg.inv(base_T) @ np.r_[midpoint, 1])[:3]
-    gap = np.linalg.norm(poses['left_inner_finger_pad'][:3, 3] - poses['right_inner_finger_pad'][:3, 3])
+    base_T = poses['robotiq_85_base_link']
+    contacts = {side: (np.linalg.inv(base_T) @ poses[f'robotiq_85_{side}_finger_tip_link'] @
+                      np.r_[contact_face_center(side), 1])[:3] for side in ('left', 'right')}
+    tcp_xyz = (contacts['left'] + contacts['right']) / 2
+    # Plane separation along opening axis; source CAD has a small asymmetric Y offset.
+    gap = abs(contacts['left'][0] - contacts['right'][0])
     ET.SubElement(gripper, 'link', name='classroom_tcp')
     j = ET.SubElement(gripper, 'joint', name='classroom_tcp_joint', type='fixed')
-    ET.SubElement(j, 'parent', link='robotiq_140_base_link')
+    ET.SubElement(j, 'parent', link='robotiq_85_base_link')
     ET.SubElement(j, 'child', link='classroom_tcp')
     ET.SubElement(j, 'origin', xyz=' '.join(map(str, tcp_xyz)), rpy='0 0 0')
     original_gripper_joints = []
@@ -146,7 +170,7 @@ def main():
             for node in list(j):
                 if node.tag in ('axis', 'limit', 'dynamics', 'mimic'): j.remove(node)
     arm = ET.parse(UR / 'source.urdf').getroot()
-    arm.set('name', 'ur3_cb3_robotiq_2f140_classroom')
+    arm.set('name', 'ur3_cb3_robotiq_2f85_classroom')
     for node in list(arm):
         if node.tag not in ('link', 'joint'): arm.remove(node)
     wrist3 = next(j for j in arm.findall('joint') if j.get('name') == 'wrist_3_joint')
@@ -160,7 +184,7 @@ def main():
     blob = bytearray(); meshes = {}; source_hashes = {}
     for filename in ('source.urdf', 'source_wrapper.xacro', 'robot.xml', 'LICENSE'):
         source_hashes['ur3/' + filename] = hashlib.sha256((UR / filename).read_bytes()).hexdigest()
-    for filename in ('robotiq_2f_140_macro.urdf.xacro', 'robotiq_2f_140.xacro', 'ur_to_robotiq_adapter.urdf.xacro', 'LICENSE'):
+    for filename in ('robotiq_2f_85_macro.urdf.xacro', 'ur_to_robotiq_adapter.urdf.xacro', 'LICENSE'):
         source_hashes['robotiq_source/' + filename] = hashlib.sha256((GRIP / filename).read_bytes()).hexdigest()
     def add_mesh(name, points, faces):
         assert points.shape[1] == faces.shape[1] == 3
@@ -203,9 +227,9 @@ def main():
     assert len({j['child'] for j in joints}) == len(joints), 'A child must have exactly one parent'
     assert set(links) - {j['child'] for j in joints} == {'world'}
     assert len(links) == len(joints) + 1
-    model = {'name':'UR3 CB3 + Robotiq 2F-140', 'rootFrame':'world', 'tcpFrame':'classroom_tcp',
+    model = {'name':'UR3 CB3 + Robotiq 2F-85', 'rootFrame':'world', 'tcpFrame':'classroom_tcp',
              'meshes':meshes, 'links':list(links.values()), 'joints':joints,
-             'gripper':{'model':'Robotiq 2F-140', 'posture':'fully open; fixed', 'padGapMetres':gap}}
+             'gripper':{'model':'Robotiq 2F-85', 'posture':'fully open; fixed', 'padGapMetres':gap}}
     # Traverse the one chain world -> TCP. Fixed roots fold into first arm origin.
     parents = {j.find('child').get('link'):j for j in arm.findall('joint')}
     path = []; child = 'classroom_tcp'
@@ -228,7 +252,10 @@ def main():
         for tag in ('visual','collision'):
             for element in list(link.findall(tag)): link.remove(element)
     ET.indent(numerical)
-    (MODELS / 'ur3_2f140.urdf').write_text(ET.tostring(numerical, encoding='unicode') + '\n')
+    numerical_xml = ET.tostring(numerical, encoding='unicode') + '\n'
+    (MODELS / 'ur3_2f85.urdf').write_text(numerical_xml)
+    (ROOT / 'dist/models').mkdir(parents=True, exist_ok=True)
+    (ROOT / 'dist/models/ur3_2f85.urdf').write_text(numerical_xml)
     (OUT / 'robot.json').write_text(json.dumps(model,separators=(',',':'))+'\n')
     (OUT / 'kinematics.json').write_text(json.dumps(kinematics,indent=2)+'\n')
     (OUT / 'meshes.bin').write_bytes(blob)
@@ -237,12 +264,15 @@ def main():
     provenance = {'ur3':json.loads((UR/'provenance.json').read_text()),
                   'robotiq':{'repository':'https://github.com/robotiq/ros','commit':COMMIT,
                              'directory':'grippers/robotiq_description','fixedJoints':original_gripper_joints},
-                  'mounting':'Official ur_to_robotiq adapter on tool0, zero yaw parameter, +0.011 m. Official 2F140 base yaw +pi/2. The adapter mesh lives in upstream 2f_85/ and is shared; all gripper parts come from 2f_140/.',
-                  'tcp':'Uncalibrated classroom frame: fixed at midpoint of open finger pad contact frames, oriented with robotiq_140_base_link.',
-                  'tcpInGripperBase':tcp_xyz.tolist(),'padGapMetres':gap,'searchIntervalNote':kinematics['wrist3Note'],
+                  'mounting':'Official ur_to_robotiq adapter on tool0, zero yaw parameter, +0.011 m. Official 2F85 base has zero yaw relative to the adapter; opening direction is base X. All gripper and adapter meshes come from 2f_85/.',
+                  'tcp':'Uncalibrated classroom frame: fixed at midpoint of area-weighted centers of the two inward open fingertip contact faces, oriented with robotiq_85_base_link. Contact faces are extracted from the official visual meshes; upstream has no pad/TCP frames.',
+                  'tcpInGripperBase':tcp_xyz.tolist(),
+                  'contactFaceCentersInGripperBase':{side:p.tolist() for side,p in contacts.items()},
+                  'padGapMetres':gap,'padGapDefinition':'Distance between the two inward contact planes along gripper-base X; source meshes have small asymmetric Y offsets.',
+                  'searchIntervalNote':kinematics['wrist3Note'],
                   'source_sha256':source_hashes,'binarySha256':hashlib.sha256(blob).hexdigest()}
     (OUT / 'provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
-    (MODELS / 'README.txt').write_text('UR3 CB3, not UR3e. Six numerical revolute joints; wrist_3_joint is physically continuous, with a classroom search interval of [-2pi,2pi].\nRobotiq 2F-140 is rigidly mounted through its official 11 mm adapter and fixed fully open.\nclassroom_tcp is the midpoint of the fully open pad contact frames, oriented with the gripper base. It is an uncalibrated classroom convention.\nThis URDF omits visual/collision geometry and is for numerical verification. Browser geometry, source attribution and licenses are in dist/assets/robot/.\n')
+    (MODELS / 'README.txt').write_text('UR3 CB3, not UR3e. Six numerical revolute joints; wrist_3_joint is physically continuous, with a classroom search interval of [-2pi,2pi].\nRobotiq 2F-85 is rigidly mounted through its official 11 mm adapter and fixed fully open.\nclassroom_tcp is the midpoint of area-weighted centers of the two inward fully open fingertip contact faces, extracted from official visual meshes and oriented with the gripper base. Upstream has no pad/TCP frames. It is an uncalibrated classroom convention.\nThis URDF omits visual/collision geometry and is for numerical verification. Browser geometry, source attribution and licenses are in dist/assets/robot/.\n')
     print(json.dumps({'meshes':len(meshes),'triangles':sum(m['indexCount']//3 for m in meshes.values()),'binaryBytes':len(blob),'tcpBase':tcp_xyz.tolist(),'tool':kinematics['tool'],'padGap':gap},indent=2))
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ import pinocchio as pin
 
 ROOT = Path(__file__).resolve().parents[1]
 LENGTH = 0.4
-model = pin.buildModelFromUrdf(str(ROOT / 'models/ur3_2f140.urdf'))
+model = pin.buildModelFromUrdf(str(ROOT / 'models/ur3_2f85.urdf'))
 data = model.createData()
 frame = model.getFrameId('classroom_tcp')
 assert model.nq == model.nv == 6

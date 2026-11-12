@@ -6,7 +6,7 @@ const orientation = rpy => new THREE.Quaternion().setFromEuler(new THREE.Euler(.
 
 export function createRobot(model, arm, buffer = null) {
   const root = new THREE.Group(), links = {}, joints = {}, geometries = {};
-  root.name = 'UR3 + Robotiq 2F-140';
+  root.name = 'UR3 + Robotiq 2F-85';
   if (buffer) for (const [name, m] of Object.entries(model.meshes)) {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(buffer, m.vertexOffset, m.vertexCount * 3), 3));

@@ -327,79 +327,84 @@
     "directory": "grippers/robotiq_description",
     "fixedJoints": [
       {
-        "name": "finger_joint",
+        "name": "robotiq_85_left_knuckle_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": null
       },
       {
-        "name": "left_inner_knuckle_joint",
+        "name": "robotiq_85_right_knuckle_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": {
-          "joint": "finger_joint",
-          "multiplier": "1",
-          "offset": "0"
+          "joint": "robotiq_85_left_knuckle_joint",
+          "multiplier": "-1"
         }
       },
       {
-        "name": "left_inner_finger_joint",
+        "name": "robotiq_85_left_inner_knuckle_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": {
-          "joint": "finger_joint",
-          "multiplier": "-1",
-          "offset": "0"
+          "joint": "robotiq_85_left_knuckle_joint"
         }
       },
       {
-        "name": "right_outer_knuckle_joint",
+        "name": "robotiq_85_right_inner_knuckle_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": {
-          "joint": "finger_joint",
-          "multiplier": "1",
-          "offset": "0"
+          "joint": "robotiq_85_left_knuckle_joint",
+          "multiplier": "-1"
         }
       },
       {
-        "name": "right_inner_knuckle_joint",
+        "name": "robotiq_85_left_finger_tip_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": {
-          "joint": "finger_joint",
-          "multiplier": "1",
-          "offset": "0"
+          "joint": "robotiq_85_left_knuckle_joint",
+          "multiplier": "-1"
         }
       },
       {
-        "name": "right_inner_finger_joint",
+        "name": "robotiq_85_right_finger_tip_joint",
         "type": "revolute",
         "openAngle": 0.0,
         "mimic": {
-          "joint": "finger_joint",
-          "multiplier": "-1",
-          "offset": "0"
+          "joint": "robotiq_85_left_knuckle_joint"
         }
       }
     ]
   },
-  "mounting": "Official ur_to_robotiq adapter on tool0, zero yaw parameter, +0.011 m. Official 2F140 base yaw +pi/2. The adapter mesh lives in upstream 2f_85/ and is shared; all gripper parts come from 2f_140/.",
-  "tcp": "Uncalibrated classroom frame: fixed at midpoint of open finger pad contact frames, oriented with robotiq_140_base_link.",
+  "mounting": "Official ur_to_robotiq adapter on tool0, zero yaw parameter, +0.011 m. Official 2F85 base has zero yaw relative to the adapter; opening direction is base X. All gripper and adapter meshes come from 2f_85/.",
+  "tcp": "Uncalibrated classroom frame: fixed at midpoint of area-weighted centers of the two inward open fingertip contact faces, oriented with robotiq_85_base_link. Contact faces are extracted from the official visual meshes; upstream has no pad/TCP frames.",
   "tcpInGripperBase": [
     0.0,
-    0.0,
-    0.17675399999999997
+    -0.000375002303496787,
+    0.1302245943172497
   ],
-  "padGapMetres": 0.140575,
+  "contactFaceCentersInGripperBase": {
+    "left": [
+      0.04250003999999999,
+      -0.0008000130790793663,
+      0.1302245940470281
+    ],
+    "right": [
+      -0.04250003999999999,
+      5.00084720857924e-05,
+      0.13022459458747132
+    ]
+  },
+  "padGapMetres": 0.08500007999999998,
+  "padGapDefinition": "Distance between the two inward contact planes along gripper-base X; source meshes have small asymmetric Y offsets.",
   "searchIntervalNote": "Continuous physical joint; [-2pi,2pi] is only the classroom numerical search interval.",
   "source_sha256": {
     "ur3/source.urdf": "8780e3828ec8a61964598589b3a4eeb6ee269c7ef9c1c50427c9e8007a4d5827",
     "ur3/source_wrapper.xacro": "a69697f8a6441f84acb9f29573c7e6b0e88642f1485fdfe21baf9825af728b67",
     "ur3/robot.xml": "db3d67fc6bfd3aae4e3d26138c3619c4a07aaad5eb37d0db5ada4349b9211a67",
     "ur3/LICENSE": "a0942017ea3cdaea501d335bd96785db389d1983f8c9aad9063d9dfb5ec6caec",
-    "robotiq_source/robotiq_2f_140_macro.urdf.xacro": "598342ca16d635c9d0349fc027b8000793b34ac0686ab4f18c6cf3267b2440d3",
-    "robotiq_source/robotiq_2f_140.xacro": "551129bdb4a7e55a2501d9fcc2a0c671d885cfa2dda972373ce1e71d5a70378d",
+    "robotiq_source/robotiq_2f_85_macro.urdf.xacro": "2cf2d7bed421a37103c15bd46a4145bed68380d37b1a2322f090c64b7bcb603d",
     "robotiq_source/ur_to_robotiq_adapter.urdf.xacro": "9a196d23b73ee68b3181f350294ecb9fef8ff2695c06854f19202ba47e2194fe",
     "robotiq_source/LICENSE": "a47544ef0ad645c587e46348dc10e68b89c3e74732bd124c005cfcd8ede3b3b8",
     "base_link_inertia_0.obj": "bd24b72e52a68aff350769eeda1684705a9a98c930d3f3028c2e279495d0e19b",
@@ -436,17 +441,15 @@
     "wrist_3_link_0.obj": "7c340981af4612504f94efa0a35b296660ea8a5dff776f79b0ab48acae36eff0",
     "wrist_3_link_1.obj": "f9e47b4736a98cac852974757d4037f43e4f054aebf7aad68305770bfb22d551",
     "robotiq_source/meshes/visual/2f_85/ur_to_robotiq_adapter.dae": "ed326c745df2942d2efb8dd902ecfafa84c692d360a7c03ce9276ad491614ac4",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_base_link.dae": "8e59a11d711d821e9d80a4079d185142c02abd7bca1887c4ce4e9756d7a98a4e",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_knuckle_left.dae": "6081e7977ed992f5f7edfa0ed7c1f6aa305e1d065464c5a2d57f6546a857c033",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_finger_left.dae": "88686dc1cc3b3a384d9d2a87745e1adf05dd439eedb9c56f0f75836336a4a5f5",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_knuckle_left.dae": "1098013a76071bb76316955730dd7ddeb02f6bcbb0528a6fbad6123f004e352a",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_left.dae": "c8699878d7489e2bbc260f4b3c864cedc13c4727762d402fb79b9c630593d7d4",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_pad_left.dae": "213ece537f6e63e0f495e628d217a6aa97f9189a58ee93be9cc472a97d35f97f",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_knuckle_right.dae": "fba0eb351fbc85e137e5472af664795e025a4ebb2f71aa394aa9bfbedd774518",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_outer_finger_right.dae": "76e73c110737e7f2788b31233d8b55e3ed9c55c801293866e37334e48588e1c9",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_knuckle_right.dae": "1ec15cbfcd7e27683aa82dbd5cb9b4056bec2bdcc24acc63ff09e5cefebe5a4b",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_right.dae": "3b5d91f97d108f8562a101b37fa9af6fb4c7b273739e2c398d0ee17527b84718",
-    "robotiq_source/meshes/visual/2f_140/robotiq_2f_140_inner_finger_pad_right.dae": "033458e121ff43d5966b72aeec056cd63ac2107e6ef3dad959d5df7925acb04b"
+    "robotiq_source/meshes/visual/2f_85/robotiq_base.dae": "761a79d586a48d367d60f146ca77ef7d2821ad790f7b1b1c93b061ac59799267",
+    "robotiq_source/meshes/visual/2f_85/left_knuckle.dae": "1b82214363d9548f3562be70e25cd23217a304c72ccd37bc1551cf1a3a64029d",
+    "robotiq_source/meshes/visual/2f_85/right_knuckle.dae": "532b6f6f8794883ff34995701036ca392461f26127757f92003db127693bc57c",
+    "robotiq_source/meshes/visual/2f_85/left_finger.dae": "5fb9e5659c735e48eb55269da431cf61b3b7a6745922c1932a7adefb1db86dc3",
+    "robotiq_source/meshes/visual/2f_85/right_finger.dae": "3b2245b5537eb596d7f8a4c64b12e3aedea46e365fc589019184d3b4200e664f",
+    "robotiq_source/meshes/visual/2f_85/left_inner_knuckle.dae": "2df009ef28868c90a4904370f5f4995c74ec84e0b8ca1371044e0ea669edcd71",
+    "robotiq_source/meshes/visual/2f_85/right_inner_knuckle.dae": "4cc6de99e177773ba755805b58b67537c3af24b2fd8f3a1bf4bbced87d6240a5",
+    "robotiq_source/meshes/visual/2f_85/left_finger_tip.dae": "785ec7a83b4fc6357c211a39bb117833b1cfd4e9bccbef2efc7f35aeb2fdb92e",
+    "robotiq_source/meshes/visual/2f_85/right_finger_tip.dae": "568371d25ddbcee8e432c0610bdcc7afcd1393d48d973eed92168e353eb4edf5"
   },
-  "binarySha256": "775f3ad2558aa0b06845b47bf161803c6663bcca811630db61a8267a5ab7d97d"
+  "binarySha256": "25421272f1051874d8b3e93e4fe20285321c6c86156c4e44340f3e362ddff171"
 }

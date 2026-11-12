@@ -1,4 +1,4 @@
-"""UR3 + fixed-open Robotiq 2F-140: NumPy kinematics and IK harness.
+"""UR3 + fixed-open Robotiq 2F-85: NumPy kinematics and IK harness.
 Geometric Jacobians are expressed in the model world/base frame.
 Full-pose diagnostics use [J_position / 0.4 m; J_angular].
 """

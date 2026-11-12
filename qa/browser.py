@@ -37,6 +37,9 @@ call('Page.navigate',{'url':BASE})
 wait("document.querySelector('#code-editor') && !document.querySelector('#code-editor').disabled")
 wait("document.querySelector('#robot-canvas').dataset.ready==='true'")
 assert js('document.documentElement.scrollWidth<=innerWidth')
+assert '2F-85' in js("document.querySelector('.stage-caption').textContent")
+assert js("fetch('assets/robot/robot.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>m.gripper.model)")=='Robotiq 2F-85'
+
 def set_code(code):
  js('document.querySelector("#code-editor").value='+json.dumps(code)+';document.querySelector("#code-editor").dispatchEvent(new Event("input"))')
 def run():
